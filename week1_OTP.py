@@ -2,7 +2,10 @@ import binascii
 import codecs
 
 ct01 = '315c4eeaa8b5f8aaf9174145bf43e1784b8fa00dc71d885a804e5ee9fa40b16349c146fb778cdf2d3aff021dfff5b403b510d0d0455468aeb98622b137dae857553ccd8883a7bc37520e06e515d22c954eba5025b8cc57ee59418ce7dc6bc41556bdb36bbca3e8774301fbcaa3b83b220809560987815f65286764703de0f3d524400a19b159610b11ef3e'
+
 ct02 = '234c02ecbbfbafa3ed18510abd11fa724fcda2018a1a8342cf064bbde548b12b07df44ba7191d9606ef4081ffde5ad46a5069d9f7f543bedb9c861bf29c7e205132eda9382b0bc2c5c4b45f919cf3a9f1cb74151f6d551f4480c82b2cb24cc5b028aa76eb7b4ab24171ab3cdadb8356f'
+ct02s = '234c'
+
 ct03 = '32510ba9a7b2bba9b8005d43a304b5714cc0bb0c8a34884dd91304b8ad40b62b07df44ba6e9d8a2368e51d04e0e7b207b70b9b8261112bacb6c866a232dfe257527dc29398f5f3251a0d47e503c66e935de81230b59b7afb5f41afa8d661cb'
 ct04 = '32510ba9aab2a8a4fd06414fb517b5605cc0aa0dc91a8908c2064ba8ad5ea06a029056f47a8ad3306ef5021eafe1ac01a81197847a5c68a1b78769a37bc8f4575432c198ccb4ef63590256e305cd3a9544ee4160ead45aef520489e7da7d835402bca670bda8eb775200b8dabbba246b130f040d8ec6447e2c767f3d30ed81ea2e4c1404e1315a1010e7229be6636aaa'
 ct05 = '3f561ba9adb4b6ebec54424ba317b564418fac0dd35f8c08d31a1fe9e24fe56808c213f17c81d9607cee021dafe1e001b21ade877a5e68bea88d61b93ac5ee0d562e8e9582f5ef375f0a4ae20ed86e935de81230b59b73fb4302cd95d770c65b40aaa065f2a5e33a5a0bb5dcaba43722130f042f8ec85b7c2070'
@@ -14,28 +17,46 @@ ct10 = '466d06ece998b7a2fb1d464fed2ced7641ddaa3cc31c9941cf110abbf409ed39598005b3
 
 targ = '32510ba9babebbbefd001547a810e67149caee11d945cd7fc81a05e9f85aac650e9052ba6a8cd8257bf14d13e6f0a803b54fde9e77472dbff89d71b57bddef121336cb85ccb8f3315f4b52e301d16e9f52f904'
 
-test_byte = '746865'
+test_byte = '2074686520'
 
-def unhex(in_hex):
-    return binascii.unhexlify(in_hex.encode())
+def XORspecificHEXinput(in_hex1, in_hex2):
+    # convert to bytes:
+    ba1 = bytes.fromhex(in_hex1)
+    ba2 = bytes.fromhex(in_hex2)
 
-def XOR_bitwise(in_1, in_2):
-    return bytes(a ^ b for a, b in zip(in_1, in_2))
+    #XOR:
+    AxorB = bytes([_a ^ _b for _a, _b in zip(ba1, ba2)])
+
+    # return in hex form again
+    return AxorB.hex()
 
 
-# Press the green button in the gutter to run the script.
-print(ct10)
-print(ct10.encode())
+
+def XORall(cypher_list):
+    for i in cypher_list:
+        for j in cypher_list:
+            print(XORspecificHEXinput(i, j).decode())
+            print('----')
 
 
-hexed_again = codecs.encode(ct10.encode(), encoding='hex')
+ctxx = [ct01, ct02, ct03, ct04, ct05, ct06, ct07, ct08, ct09]
 
-print(hexed_again)
+# XORall(ctxx)
 
-de_hexed = codecs.decode(hexed_again, encoding='hex')
+print(ct02)
+print(type(ct02))
 
-print(de_hexed)
+ctfromHEX = bytes.fromhex(ct02)
 
-print(hex(int(ct01, 16) ^ int(ct02, 16)))
+print(ctfromHEX)
 
-print(hex(int(ct01, 16) ^ int(ct02, 16)).decode('hex'))
+cttoHEX = ctfromHEX.hex()
+
+print(cttoHEX)
+print(type(cttoHEX))
+
+print(ct03)
+print(ct04)
+
+test_xor = XORspecificHEXinput(ct03, test_byte)
+print(bytes.fromhex(test_xor))
