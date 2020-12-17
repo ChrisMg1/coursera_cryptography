@@ -21,22 +21,28 @@ test_byte = '2074686520'
 
 def XORspecificHEXinput(in_hex1, in_hex2):
     # convert to bytes:
-    ba1 = bytes.fromhex(in_hex1)
-    ba2 = bytes.fromhex(in_hex2)
+    ba1 = bytes.fromhex(STRINGtoHEX(in_hex1))
+    ba2 = bytes.fromhex(STRINGtoHEX(in_hex2))
 
     #XOR:
-    AxorB = bytes([_a ^ _b for _a, _b in zip(ba1, ba2)])
+    AxorB = bytes(_a ^ _b for _a, _b in zip(ba1, ba2))
 
     # return in hex form again
     return AxorB.hex()
-
-
 
 def XORall(cypher_list):
     for i in cypher_list:
         for j in cypher_list:
             print(XORspecificHEXinput(i, j).decode())
             print('----')
+
+def STRINGtoHEX(in_string):
+    to_hex = in_string.encode()
+    return codecs.encode(to_hex, 'hex').decode()
+
+def REMfirstCHAR(in_string):
+    return in_string[1:]
+
 
 
 ctxx = [ct01, ct02, ct03, ct04, ct05, ct06, ct07, ct08, ct09]
@@ -58,5 +64,35 @@ print(type(cttoHEX))
 print(ct03)
 print(ct04)
 
+test_xor1 = XORspecificHEXinput(ct03, ct04)
+print(bytes.fromhex(test_xor1))
+
 test_xor = XORspecificHEXinput(ct03, test_byte)
 print(bytes.fromhex(test_xor))
+
+test_cipher = 'this it the end 11'
+
+
+test_word = ' THE '
+print(test_word)
+
+for i in range(1,10):
+    print(test_cipher)
+    print(test_word)
+    print(XORspecificHEXinput(test_cipher, test_word))
+
+    if XORspecificHEXinput(test_cipher, test_word) == '0020202000':
+        print('FOUND')
+    test_cipher = REMfirstCHAR((test_cipher))
+
+test_result = XORspecificHEXinput(STRINGtoHEX(test_cipher), STRINGtoHEX(test_word))
+print(test_result)
+
+print(ct01)
+print(type(ct01))
+print(test_word)
+print(type(test_word))
+print(XORspecificHEXinput(test_word, ct01))
+print(XORspecificHEXinput(ct01, test_word))
+print(type(XORspecificHEXinput(ct01, ct02)))
+
