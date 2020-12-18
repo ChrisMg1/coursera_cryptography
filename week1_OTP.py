@@ -43,6 +43,21 @@ def STRINGtoHEX(in_string):
 def REMfirstCHAR(in_string):
     return in_string[1:]
 
+def FLOATacross(test_cipher, test_word):
+    for i in range(1, 10):
+        print(test_cipher)
+        print(test_word)
+        print(XORspecificHEXinput(test_cipher, test_word))
+
+        if XORspecificHEXinput(test_cipher, test_word) == '0020202000':
+            print('FOUND')
+        test_cipher = REMfirstCHAR(test_cipher)
+    return None
+
+def HEXtoSTRING(in_hex):
+    ret_temp = bytes.fromhex(in_hex)
+    # abschließendes decode geht nicht, weil byte-chaos und keine ascii-codierung
+    return ret_temp
 
 
 ctxx = [ct01, ct02, ct03, ct04, ct05, ct06, ct07, ct08, ct09]
@@ -61,11 +76,8 @@ cttoHEX = ctfromHEX.hex()
 print(cttoHEX)
 print(type(cttoHEX))
 
-print(ct03)
-print(ct04)
 
 test_xor1 = XORspecificHEXinput(ct03, ct04)
-print(bytes.fromhex(test_xor1))
 
 test_xor = XORspecificHEXinput(ct03, test_byte)
 print(bytes.fromhex(test_xor))
@@ -76,14 +88,10 @@ test_cipher = 'this it the end 11'
 test_word = ' THE '
 print(test_word)
 
-for i in range(1,10):
-    print(test_cipher)
-    print(test_word)
-    print(XORspecificHEXinput(test_cipher, test_word))
 
-    if XORspecificHEXinput(test_cipher, test_word) == '0020202000':
-        print('FOUND')
-    test_cipher = REMfirstCHAR((test_cipher))
+
+
+# FLOATacross(test_cipher, test_word)
 
 test_result = XORspecificHEXinput(STRINGtoHEX(test_cipher), STRINGtoHEX(test_word))
 print(test_result)
@@ -96,3 +104,8 @@ print(XORspecificHEXinput(test_word, ct01))
 print(XORspecificHEXinput(ct01, test_word))
 print(type(XORspecificHEXinput(ct01, ct02)))
 
+for i in range(0, len('hello')):
+    print('hello'[i])
+
+print(ct02)
+print(HEXtoSTRING(ct02))
