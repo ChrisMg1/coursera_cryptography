@@ -1,5 +1,6 @@
 import binascii
 import codecs
+import re
 
 ct01 = '315c4eeaa8b5f8aaf9174145bf43e1784b8fa00dc71d885a804e5ee9fa40b16349c146fb778cdf2d3aff021dfff5b403b510d0d0455468aeb98622b137dae857553ccd8883a7bc37520e06e515d22c954eba5025b8cc57ee59418ce7dc6bc41556bdb36bbca3e8774301fbcaa3b83b220809560987815f65286764703de0f3d524400a19b159610b11ef3e'
 ct02 = '234c02ecbbfbafa3ed18510abd11fa724fcda2018a1a8342cf064bbde548b12b07df44ba7191d9606ef4081ffde5ad46a5069d9f7f543bedb9c861bf29c7e205132eda9382b0bc2c5c4b45f919cf3a9f1cb74151f6d551f4480c82b2cb24cc5b028aa76eb7b4ab24171ab3cdadb8356f'
@@ -59,8 +60,8 @@ def FLOATacross(test_cipher, test_word):
 
 ctxx = [ct01, ct02, ct03, ct04, ct05, ct06, ct07, ct08, ct09]
 
-tut1 = 'Hello World'
-tut2 = 'the program'
+tut1 = 'hello world'
+tut2 = 'HELLO times'
 key = 'supersecret'
 
 print(tut1)
@@ -71,9 +72,9 @@ tut1 = STRINGtoHEX(tut1)
 tut2 = STRINGtoHEX(tut2)
 key = STRINGtoHEX(key)
 
-print(tut1)
-print(tut2)
-print(key)
+print('tut1', tut1)
+print('tut2', tut2)
+print('key', key)
 
 tut1_xor = XORspecificHEXinput(tut1, key)
 tut2_xor = XORspecificHEXinput(tut2, key)
@@ -81,14 +82,30 @@ tut2_xor = XORspecificHEXinput(tut2, key)
 print(tut1_xor, type(tut1_xor))
 print(tut2_xor, type(tut2_xor))
 
-crib = XORspecificHEXinput(tut1_xor, tut2_xor)
 
-test_word = STRINGtoHEX('the')
-print(test_word)
 
-print(crib)
+base_ct01 = [None] * max(len(i) for i in ctxx)
 
-fitry = XORspecificHEXinput(crib, test_word)
 
-print(HEXtoSTRING(fitry))
+for i in ctxx:
+    tut1_xor = ct03
+    tut2_xor = i
+
+    crib = XORspecificHEXinput(tut1_xor, tut2_xor)
+    print(crib, type(crib), len(crib))
+
+
+
+    print(base_ct01)
+
+    for m in re.finditer('20', crib):
+        print('20 found', m.start(), m.end())
+        m_start = m.start()
+        m_stop = m.end()
+        print(tut1[m_start:m_stop])
+        print(HEXtoSTRING(tut1[m_start:m_stop]))
+        base_ct01[int(m_start/2)] = HEXtoSTRING(tut1[m_start:m_stop])
+
+
+print(base_ct01)
 
