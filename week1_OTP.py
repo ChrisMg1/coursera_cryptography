@@ -1,6 +1,7 @@
 import binascii
 import codecs
 import re
+import string
 
 ct01 = '315c4eeaa8b5f8aaf9174145bf43e1784b8fa00dc71d885a804e5ee9fa40b16349c146fb778cdf2d3aff021dfff5b403b510d0d0455468aeb98622b137dae857553ccd8883a7bc37520e06e515d22c954eba5025b8cc57ee59418ce7dc6bc41556bdb36bbca3e8774301fbcaa3b83b220809560987815f65286764703de0f3d524400a19b159610b11ef3e'
 ct02 = '234c02ecbbfbafa3ed18510abd11fa724fcda2018a1a8342cf064bbde548b12b07df44ba7191d9606ef4081ffde5ad46a5069d9f7f543bedb9c861bf29c7e205132eda9382b0bc2c5c4b45f919cf3a9f1cb74151f6d551f4480c82b2cb24cc5b028aa76eb7b4ab24171ab3cdadb8356f'
@@ -58,7 +59,11 @@ def FLOATacross(test_cipher, test_word):
         test_cipher = REMfirstCHAR(test_cipher)
     return None
 
-ctxx = [ct01, ct02, ct03, ct04, ct05, ct06, ct07, ct08, ct09]
+def markSPACES(cipherXcipher):
+    return cipherXcipher.replace('20', '__')
+
+
+
 
 tut1 = 'hello world'
 tut2 = 'HELLO times'
@@ -82,16 +87,20 @@ tut2_xor = XORspecificHEXinput(tut2, key)
 print(tut1_xor, type(tut1_xor))
 print(tut2_xor, type(tut2_xor))
 
+# ctxx = [ct01, ct02, ct03, ct04, ct05, ct06, ct07, ct08, ct09]
 
+ctxx = [tut1_xor, tut2_xor]
 
-base_ct01 = [None] * max(len(i) for i in ctxx)
+print(ctxx)
+
+base_ct01 = [None] * int(max(len(i) for i in ctxx) / 2)
 
 
 for i in ctxx:
-    tut1_xor = ct03
-    tut2_xor = i
+    cipher1 = ctxx[0]
+    cipher2 = ctxx[1]
 
-    crib = XORspecificHEXinput(tut1_xor, tut2_xor)
+    crib = XORspecificHEXinput(cipher1, cipher2)
     print(crib, type(crib), len(crib))
 
 
@@ -102,10 +111,77 @@ for i in ctxx:
         print('20 found', m.start(), m.end())
         m_start = m.start()
         m_stop = m.end()
-        print(tut1[m_start:m_stop])
-        print(HEXtoSTRING(tut1[m_start:m_stop]))
-        base_ct01[int(m_start/2)] = HEXtoSTRING(tut1[m_start:m_stop])
+        print(cipher1[m_start:m_stop])
+        print(HEXtoSTRING(cipher1[m_start:m_stop]))
+        base_ct01[int(m_start/2)] = HEXtoSTRING(cipher1[m_start:m_stop])
 
 
-print(base_ct01)
 
+
+
+
+print(tut1_xor, type(tut1_xor))
+print(tut2_xor, type(tut2_xor))
+
+tut1_xor_sub = tut1_xor[0:2]
+tut2_xor_sub = tut2_xor[0:2]
+
+print(tut1_xor_sub, type(tut1_xor_sub), HEXtoSTRING(tut1_xor_sub), HEXtoSTRING(tut1))
+print(tut2_xor_sub, type(tut2_xor_sub), HEXtoSTRING(tut2_xor_sub), HEXtoSTRING(tut2))
+
+hexH = STRINGtoHEX('H')
+hexh = STRINGtoHEX('h')
+print('H', hexH)
+print('h', hexh)
+
+print(HEXtoSTRING(XORspecificHEXinput(hexH, hexh)))
+
+cipherXcipher = XORspecificHEXinput(tut1_xor_sub, tut2_xor_sub)
+
+#print(cipherXcipher)
+
+# decryptXcipher = XORspecificHEXinput(cipherXcipher, hexH)
+
+#print(decryptXcipher)
+
+#print(HEXtoSTRING(decryptXcipher))
+
+print('------decrypting')
+
+#for i in string.ascii_uppercase:
+#    print(cipherXcipher, tut2_xor_sub, i, STRINGtoHEX(i))
+#    decryptXcipher = XORspecificHEXinput(tut1_xor_sub, STRINGtoHEX(i))
+ #   print(decryptXcipher, HEXtoSTRING(decryptXcipher))
+ #   if HEXtoSTRING(decryptXcipher) in string.ascii_lowercase:
+  #      print('FOUND', HEXtoSTRING(tut1_xor_sub))
+
+
+print('****')
+print(XORspecificHEXinput(tut1_xor_sub, tut1_xor_sub))
+print(HEXtoSTRING(tut1_xor_sub))
+
+XORspecificHEXinput(tut1_xor_sub, STRINGtoHEX(i))
+
+myTHE = STRINGtoHEX(' the ')
+print(' the ', myTHE)
+
+ct1XORct2 = XORspecificHEXinput(ct01, ct02)
+
+print(ct1XORct2)
+try1 = XORspecificHEXinput(ct1XORct2, myTHE)
+print(HEXtoSTRING(try1))
+
+#print(len(ct1XORct2))
+
+
+for i in range(1,len(ct1XORct2)):
+    print('NEW TRY')
+    myTHE = '00' + myTHE
+    print(myTHE)
+    try1 = XORspecificHEXinput(ct1XORct2, myTHE)
+    print(HEXtoSTRING(try1))
+    print('END TRY')
+
+# print(base_ct01)
+
+print(len(ct1XORct2))
