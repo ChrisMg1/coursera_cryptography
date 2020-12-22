@@ -185,3 +185,29 @@ for i in range(1,len(ct1XORct2)):
 # print(base_ct01)
 
 print(len(ct1XORct2))
+
+p_quiz = 'attack at dawn'
+t_quiz = 'attack at dusk'
+c_quiz = '6c73d5240a948c86981bc294814d'
+
+print(p_quiz)
+p_quiz_hex = STRINGtoHEX(p_quiz)
+print(p_quiz_hex)
+
+k_quiz = XORspecificHEXinput(p_quiz_hex, c_quiz)
+
+print(k_quiz)
+
+print(HEXtoSTRING(XORspecificHEXinput(c_quiz, k_quiz)))
+
+t_quiz_hex = STRINGtoHEX(t_quiz)
+
+
+solution = XORspecificHEXinput(k_quiz, t_quiz_hex)
+print(c_quiz)
+print('solution', solution)
+
+
+print(HEXtoSTRING(XORspecificHEXinput(solution, k_quiz)))
+
+
