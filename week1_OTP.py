@@ -205,7 +205,7 @@ t_quiz_hex = STRINGtoHEX(t_quiz)
 
 solution = XORspecificHEXinput(k_quiz, t_quiz_hex)
 print(c_quiz)
-print('solution', solution)
+print(solution, '(solution)')
 
 
 print(HEXtoSTRING(XORspecificHEXinput(solution, k_quiz)))
